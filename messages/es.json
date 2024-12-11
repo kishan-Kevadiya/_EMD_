@@ -1,0 +1,14 @@
+{
+    "login": {
+      "title": "Iniciar Sesión",
+      "subtitle": "Ingrese sus credenciales para acceder al panel de administración",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "...@gmail.com",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "Ingrese su contraseña",
+      "signInButton": "Iniciar Sesión",
+      "restrictedAccess": "Esta área está restringida solo para super administradores. Si necesita acceso, póngase en contacto con su administrador del sistema."
+    }
+  }
+  
+  

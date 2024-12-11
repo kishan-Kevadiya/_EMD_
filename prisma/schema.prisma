@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql" 
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SA
+  LA
+  HS
+  GS
+  ST
+}
+
+model super_admin {
+  id              Int               @id @default(autoincrement())
+  hash_id         String            @unique @default(uuid()) @db.VarChar(36)
+  username        String            @unique @db.VarChar(255)
+  email           String            @unique @db.VarChar(255)
+  password        String            @db.VarChar(255)
+  created_at      DateTime          @default(now()) @db.DateTime(6)
+  is_active       Int               @db.Int
+  role            Role              @default(SA)
+  location_admins location_admin[]
+}
+
+model location_admin {
+  id                              Int                @id @default(autoincrement())
+  hash_id                         String             @unique @default(uuid()) @db.VarChar(36)
+  location                        Int                @db.Int
+  location_Add                    String             @unique @db.VarChar(255)  
+  name                            String             @db.VarChar(50)
+  email                           String             @db.VarChar(50)
+  password                        String             @db.VarChar(255)
+  created_at                      DateTime           @default(now()) @db.DateTime(6)
+  updated_at                      DateTime?          @updatedAt @db.DateTime(6)
+  deleted_at                      DateTime?          @db.DateTime(6)
+  created_by                      Int                @db.Int
+  updated_by                      Int?               @db.Int
+  deleted_by                      Int?               @db.Int
+  reset_password_token            String?            @db.VarChar(500)
+  reset_password_token_expired_at DateTime?          @db.DateTime(6)
+  is_active                       Int                @db.Int
+  role                            Role               @default(LA)
+  super_admin                     super_admin        @relation(fields: [created_by], references: [id])
+
+  @@unique([email, deleted_at])
+}
+
+model Event {
+  id              Int       @id @default(autoincrement())
+  hash_id         String    @unique @default(uuid()) @db.VarChar(36)
+  title           String    @db.VarChar(255)
+  description     String    @db.Text
+  location_id     String    @db.VarChar(255)
+  is_public       Boolean   @default(true)
+  created_at      DateTime  @default(now())
+  updated_at      DateTime?  @updatedAt
+  deleted_at      DateTime?
+  image_url       String?   @db.VarChar(255)
+  host_email      String?   @db.VarChar(255)
+  host_password   String    @db.VarChar(255)
+
+  host_phone      String?   @db.VarChar(20)
+  role            Role      @default(HS)
+
+
+  staffs          Staff[]
+}
+
+model Staff {
+  id              Int       @id @default(autoincrement())                                                                                                 
+  hash_id         String    @unique @default(uuid()) @db.VarChar(36)
+  email           String    @unique @db.VarChar(255)
+  password        String    @db.VarChar(255)
+  name            String    @db.VarChar(255)
+  role                            Role               @default(ST)
+  is_active       Boolean   @default(true)
+  created_at      DateTime  @default(now())
+  updated_at      DateTime?  @updatedAt
+  deleted_at      DateTime?
+  event_id        Int
+  event           Event     @relation(fields: [event_id], references: [id])
+}
+
+// model Event {
+//   id              Int       @id @default(autoincrement())
+//   hash_id         String    @unique @default(uuid()) @db.VarChar(36)
+//   title           String    @db.VarChar(255)
+//   description     String    @db.Text
+//   start_date      DateTime
+//   end_date        DateTime
+//   location_id     Int
+//   location        Location  @relation(fields: [location_id], references: [id])
+//   organizer_id    Int
+//   organizer       User      @relation(fields: [organizer_id], references: [id])
+//   max_attendees   Int?
+//   current_attendees Int     @default(0)
+//   event_type      EventType
+//   status          EventStatus @default(DRAFT)
+//   is_public       Boolean   @default(true)
+//   ticket_price    Decimal?  @db.Decimal(10, 2)
+//   created_at      DateTime  @default(now())
+//   updated_at      DateTime  @updatedAt
+//   deleted_at      DateTime?
+
+//   // Additional fields
+//   image_url       String?   @db.VarChar(255)
+//   website         String?   @db.VarChar(255)
+//   contact_email   String?   @db.VarChar(255)
+//   contact_phone   String?   @db.VarChar(20)
+//   tags            String?   @db.VarChar(255) // Comma-separated tags
+//   age_restriction Int?
+  
+//   // Relations
+//   attendees       Attendee[]
+// }
+
+
+// model Staff {
+//   id              Int       @id @default(autoincrement())
+//   hash_id         String    @unique @default(uuid()) @db.VarChar(36)
+//   email           String    @unique @db.VarChar(255)
+//   password        String    @db.VarChar(255)
+//   name            String    @db.VarChar(255)
+//   role            StaffRole @default(GENERAL)
+//   is_active       Boolean   @default(true)
+//   created_at      DateTime  @default(now())
+//   updated_at      DateTime  @updatedAt
+//   deleted_at      DateTime?
+//   last_login      DateTime?
+//   event_id        Int
+//   event           Event     @relation(fields: [event_id], references: [id])
+// }

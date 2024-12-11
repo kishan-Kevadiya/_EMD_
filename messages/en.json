@@ -1,0 +1,13 @@
+{
+    "login": {
+      "title": "Login",
+      "subtitle": "Enter your credentials to access the admin panel",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "...@gmail.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "signInButton": "Sign In",
+      "restrictedAccess": "This area is restricted to super administrators only. If you need access, please contact your system administrator."
+    }
+}
+  
